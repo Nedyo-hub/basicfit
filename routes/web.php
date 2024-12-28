@@ -1,16 +1,19 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AdminController; 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -20,8 +23,18 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
+   
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     
-});
     
+    Route::post('/admin/user/create', [AdminController::class, 'createUser'])->name('admin.user.create');
+
+    
+    Route::patch('/admin/user/promote/{id}', [AdminController::class, 'promoteUser'])->name('admin.user.promote');
+
+    
+    Route::patch('/admin/user/demote/{id}', [AdminController::class, 'demoteUser'])->name('admin.user.demote');
+});
+
+
 require __DIR__.'/auth.php';
