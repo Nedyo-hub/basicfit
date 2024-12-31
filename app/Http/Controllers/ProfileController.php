@@ -11,50 +11,41 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    // Toon publieke profielpagina
+    public function show(User $user)
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        return view('profile.show', ['user' => $user]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    // Formulier om profiel te bewerken
+    public function edit()
     {
-        $request->user()->fill($request->validated());
+        $user = auth()->user();
+        return view('profile.edit', ['user' => $user]);
+    }
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+    // Profiel updaten
+    public function update(Request $request)
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'username' => 'nullable|string|max:255',
+            'birthday' => 'nullable|date',
+            'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'about_me' => 'nullable|string|max:500',
+        ]);
+
+        // Profielfoto uploaden
+        if ($request->hasFile('profile_picture')) {
+            if ($user->profile_picture) {
+                Storage::delete($user->profile_picture);
+            }
+            $validated['profile_picture'] = $request->file('profile_picture')->store('profile_pictures');
         }
 
-        $request->user()->save();
+        $user->update($validated);
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return redirect()->route('profile.edit')->with('success', 'Profiel succesvol bijgewerkt.');
     }
 }
