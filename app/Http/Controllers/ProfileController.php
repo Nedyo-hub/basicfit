@@ -2,33 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    // Toon publieke profielpagina
+    /**
+     * Toon publieke profielpagina.
+     */
     public function show(User $user)
     {
         return view('profile.show', ['user' => $user]);
     }
 
-    // Formulier om profiel te bewerken
+    /**
+     * Toon profiel bewerken pagina voor ingelogde gebruiker.
+     */
     public function edit()
     {
         $user = auth()->user();
         return view('profile.edit', ['user' => $user]);
     }
 
-    // Profiel updaten
+    /**
+     * Update het profiel van de ingelogde gebruiker.
+     */
     public function update(Request $request)
     {
         $user = auth()->user();
 
+        // Validatie van input
         $validated = $request->validate([
             'username' => 'nullable|string|max:255',
             'birthday' => 'nullable|date',
@@ -38,14 +43,19 @@ class ProfileController extends Controller
 
         // Profielfoto uploaden
         if ($request->hasFile('profile_picture')) {
+            // Oude profielfoto verwijderen als er een is
             if ($user->profile_picture) {
                 Storage::delete($user->profile_picture);
             }
+
+            // Nieuwe profielfoto opslaan
             $validated['profile_picture'] = $request->file('profile_picture')->store('profile_pictures');
         }
 
+        // Gebruikersgegevens updaten
         $user->update($validated);
 
+        // Redirect met succesbericht
         return redirect()->route('profile.edit')->with('success', 'Profiel succesvol bijgewerkt.');
     }
 }

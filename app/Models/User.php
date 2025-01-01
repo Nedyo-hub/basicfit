@@ -15,11 +15,25 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'username',
+        'birthday',
+        'profile_picture',
+        'about_me',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
     ];
-}
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
+
+    // Casts voor velden
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'birthday' => 'date',
+    ];
+}

@@ -9,9 +9,8 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
-        dd(Auth::user()->role);
-
+        $users = User::all(); // Haal alle gebruikers op
+        return view('admin.dashboard', compact('users'));
     }
 
     public function createUser(Request $request)
@@ -50,11 +49,4 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Adminrechten verwijderd.');
     }
-
-    public function index()
-{
-    $users = User::all(); // Haal alle gebruikers op
-    return view('admin.dashboard', compact('users'));
-}
-
 }
