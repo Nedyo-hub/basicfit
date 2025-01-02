@@ -2,6 +2,7 @@
     <h1>Profiel bewerken</h1>
     <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
         @csrf
+        @method('PATCH')
 
         <div>
             <label for="username">Gebruikersnaam</label>
