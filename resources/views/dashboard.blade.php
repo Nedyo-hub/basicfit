@@ -5,6 +5,21 @@
         </h2>
     </x-slot>
 
+    <div class="py-6 px-6">
+        <div class="flex space-x-4">
+            <a href="{{ route('news.index') }}" 
+               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Bekijk laatste nieuws
+            </a>
+            @if (auth()->user()->role === 'admin')
+                <a href="{{ route('news.create') }}" 
+                   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Nieuw nieuwsbericht toevoegen
+                </a>
+            @endif
+        </div>
+    </div>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
