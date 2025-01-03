@@ -48,5 +48,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 
+use App\Http\Controllers\FAQController;
+
+// FAQ Routes
+Route::resource('faq', FAQController::class)->except(['show']);
+
+
 // Authenticatie routes
 require __DIR__ . '/auth.php';
+
+

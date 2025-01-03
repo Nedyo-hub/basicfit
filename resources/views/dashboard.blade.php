@@ -21,7 +21,14 @@
                                 </a>
                             @endif
                         </div>
-
+                        <a href="{{ route('faq.index') }}" class="text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded">
+        Bekijk FAQ
+    </a>
+    @if (auth()->user()->role === 'admin')
+        <a href="{{ route('faq.create') }}" class="text-white bg-green-500 hover:bg-green-700 px-4 py-2 rounded">
+            Voeg FAQ toe
+        </a>
+    @endif
                         <!-- Dashboard info -->
                         <div class="mt-10">
                             <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded shadow">
