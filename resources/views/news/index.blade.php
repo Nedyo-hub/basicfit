@@ -1,10 +1,13 @@
 <x-app-layout>
-    <h1>Laatste nieuws</h1>
-    @foreach ($news as $item)
-        <div>
-            <h2><a href="{{ route('news.show', $item) }}">{{ $item->title }}</a></h2>
-            <p>{{ Str::limit($item->content, 100) }}</p>
-            <small>Gepubliceerd op: {{ $item->published_at->format('d-m-Y') }}</small>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-center">
+                    <h1 class="text-white text-4xl font-bold">
+                        Laatste nieuws
+                    </h1>
+                </div>
+            </div>
         </div>
-    @endforeach
+    </div>
 </x-app-layout>
