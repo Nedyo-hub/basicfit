@@ -54,6 +54,13 @@ use App\Http\Controllers\FAQController;
 Route::resource('faq', FAQController::class)->except(['show']);
 
 
+use App\Http\Controllers\ContactController;
+
+Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
+
 // Authenticatie routes
 require __DIR__ . '/auth.php';
 
