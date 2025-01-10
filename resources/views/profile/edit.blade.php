@@ -1,5 +1,5 @@
 <x-app-layout>
-    <h1>Profiel bewerken</h1>
+    <h1>Profiel Bewerken</h1>
     <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
         @csrf
         @method('PATCH')

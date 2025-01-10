@@ -36,4 +36,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'birthday' => 'date',
     ];
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+    
 }

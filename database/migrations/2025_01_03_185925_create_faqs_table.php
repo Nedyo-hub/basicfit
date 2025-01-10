@@ -20,4 +20,10 @@ return new class extends Migration {
     {
         Schema::dropIfExists('faqs');
     }
+
+
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
+    
 };

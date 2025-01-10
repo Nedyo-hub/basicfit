@@ -7,46 +7,51 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index()
+    
+    public function dashboard()
     {
         $users = User::all(); // Haal alle gebruikers op
         return view('admin.dashboard', compact('users'));
     }
 
+   
+    public function demote(User $user)
+{
+    if (auth()->id() === $user->id) {
+        return redirect()->route('admin.dashboard')->with('error', 'Je kunt jezelf niet demoten.');
+    }
+
+    if (!$user->is_admin) {
+        return redirect()->route('admin.dashboard')->with('info', 'Deze gebruiker is geen admin.');
+    }
+
+    $user->is_admin = false;
+    $user->save();
+
+    return redirect()->route('admin.dashboard')->with('success', 'Adminrechten zijn succesvol verwijderd.');
+}
+
+        
+
+    /**
+     * Nieuwe gebruiker aanmaking  via admin.
+     */
     public function createUser(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role' => 'required|in:user,admin',
+            'is_admin' => 'required|boolean',
         ]);
 
         User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => $request->role,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => bcrypt($validated['password']),
+            'is_admin' => $validated['is_admin'],
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Gebruiker aangemaakt.');
-    }
-
-    public function promoteUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->role = 'admin';
-        $user->save();
-
-        return redirect()->route('admin.dashboard')->with('success', 'Gebruiker verheven tot admin.');
-    }
-
-    public function demoteUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->role = 'user';
-        $user->save();
-
-        return redirect()->route('admin.dashboard')->with('success', 'Adminrechten verwijderd.');
+        return redirect()->route('admin.dashboard')->with('success', 'Gebruiker succesvol aangemaakt.');
     }
 }

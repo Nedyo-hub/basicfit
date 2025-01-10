@@ -18,4 +18,9 @@ return new class extends Migration {
     {
         Schema::dropIfExists('categories');
     }
+
+    public function category() {
+        return $this->belongsTo(Category::class);
+    }
+    
 };
