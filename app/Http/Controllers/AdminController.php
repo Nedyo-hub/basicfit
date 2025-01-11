@@ -7,34 +7,44 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    
     public function dashboard()
     {
         $users = User::all(); // Haal alle gebruikers op
         return view('admin.dashboard', compact('users'));
     }
 
-   
+    public function promote(User $user)
+    {
+        if ($user->is_admin) {
+            return redirect()->route('admin.dashboard')->with('info', 'Deze gebruiker is al een admin.');
+        }
+
+        $user->is_admin = true;
+        $user->save();
+
+        return redirect()->route('admin.dashboard')->with('success', 'De gebruiker is succesvol gepromoveerd tot admin.');
+    }
+
     public function demote(User $user)
-{
-    if (auth()->id() === $user->id) {
-        return redirect()->route('admin.dashboard')->with('error', 'Je kunt jezelf niet demoten.');
+    {
+        //  admin  kan zichzelf niet demoten
+        if (auth()->id() === $user->id) {
+            return redirect()->route('admin.dashboard')->with('error', 'Je kunt jezelf niet demoten.');
+        }
+
+        // Controleer of de gebruiker geen admin is
+        if (!$user->is_admin) {
+            return redirect()->route('admin.dashboard')->with('info', 'Deze gebruiker is geen admin.');
+        }
+
+        $user->is_admin = false;
+        $user->save();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Adminrechten zijn succesvol verwijderd.');
     }
-
-    if (!$user->is_admin) {
-        return redirect()->route('admin.dashboard')->with('info', 'Deze gebruiker is geen admin.');
-    }
-
-    $user->is_admin = false;
-    $user->save();
-
-    return redirect()->route('admin.dashboard')->with('success', 'Adminrechten zijn succesvol verwijderd.');
-}
-
-        
 
     /**
-     * Nieuwe gebruiker aanmaking  via admin.
+     * Nieuwe gebruiker aanmaken via admin.
      */
     public function createUser(Request $request)
     {

@@ -1,23 +1,46 @@
 <x-app-layout>
-    <h1 class="text-white text-4xl font-bold mb-6 text-center">FAQ Toevoegen</h1>
-    <form method="POST" action="{{ route('faq.store') }}">
-        @csrf
-        <div>
-            <label for="question" class="text-white">Vraag:</label>
-            <input type="text" name="question" id="question" required>
-        </div>
-        <div>
-            <label for="answer" class="text-white">Antwoord:</label>
-            <textarea name="answer" id="answer" required></textarea>
-        </div>
-        <div>
-            <label for="category_id" class="text-white">Categorie:</label>
-            <select name="category_id" id="category_id" required>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Opslaan</button>
-    </form>
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-md rounded">
+
+       
+        <h1 class="text-3xl font-bold mb-4">FAQ Toevoegen</h1>
+
+        
+        <form method="POST" action="{{ route('faqs.store') }}" enctype="multipart/form-data" class="space-y-6">
+            @csrf
+
+           
+            <div>
+                <label for="vraag" class="block text-sm font-medium text-gray-700">Vraag:</label>
+                <input type="text" name="vraag" id="vraag" required
+                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+            </div>
+
+            
+            <div>
+                <label for="antwoord" class="block text-sm font-medium text-gray-700">Antwoord:</label>
+                <textarea name="antwoord" id="antwoord" rows="4" required
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+            </div>
+
+           
+            <div>
+                <label for="categorie" class="block text-sm font-medium text-gray-700">Categorie:</label>
+                <select name="categorie" id="categorie" required
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                    <option value="">Selecteer een categorie</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+             
+            <div>
+                <button type="submit"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    Opslaan
+                </button>
+            </div>
+        </form>
+    </div>
 </x-app-layout>

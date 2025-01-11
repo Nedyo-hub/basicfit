@@ -8,14 +8,16 @@ use App\Models\User;
 
 class DefaultAdminSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@ehb.be'],
+            ['email' => 'admin@ehb.be'], 
             [
                 'name' => 'Admin',
-                'password' => Hash::make('Password!321'),
-                'role' => 'admin',
+                'password' => Hash::make('Password!321'), 
                 'is_admin' => true, 
             ]
         );

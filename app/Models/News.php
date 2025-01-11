@@ -9,11 +9,22 @@ class News extends Model
 {
     use HasFactory;
 
-    
     protected $fillable = [
         'title',
         'content',
-        'image',
-        'published_at',
+        'image_path',
+        'publication_date',
     ];
+
+   
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_news');
+    }
 }

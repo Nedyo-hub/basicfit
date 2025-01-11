@@ -7,6 +7,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CommentController; 
 
 // Authenticatie routes
 require __DIR__ . '/auth.php';
@@ -41,12 +42,19 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::patch('/admin/users/{user}/promote', [AdminController::class, 'promote'])->name('admin.user.promote');
     Route::patch('/admin/users/{user}/demote', [AdminController::class, 'demote'])->name('admin.user.demote');
 
-    // Nieuwsbeheer
+// Nieuwsbeheer voor Admins
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
     Route::post('/news', [NewsController::class, 'store'])->name('news.store');
     Route::get('/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
     Route::patch('/news/{news}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('/news/{news}', [NewsController::class, 'destroy'])->name('news.destroy');
+});
+
+// Publieke routes voor nieuws
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
+
 
     // FAQ- en categoriebeheer
     Route::resource('categories', CategoryController::class)->except(['show']);
@@ -59,8 +67,16 @@ Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
 
 // Publieke FAQ-pagina
 Route::get('/faq', [FAQController::class, 'index'])->name('faq.index');
+Route::resource('faqs', FAQController::class)->except(['show']);
+
 
 // Contact routes
 Route::get('/contact', [ContactController::class, 'create'])->name('contact.create');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+
+
+
+
+// Reacties routes
+Route::post('/comments/{news}', [CommentController::class, 'store'])->name('comments.store');

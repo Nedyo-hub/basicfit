@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -32,8 +33,9 @@ class NewsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('news_images');
+            $validated['image_path'] = $request->file('image')->store('news_images', 'public');
         }
+        
 
         $validated['published_at'] = now();
 
@@ -69,12 +71,13 @@ class NewsController extends Controller
 
     public function destroy(News $news)
     {
-        if ($news->image) {
-            Storage::delete($news->image);
+        if ($news->image_path) {
+            Storage::delete($news->image_path);
         }
-
+    
         $news->delete();
-
+    
         return redirect()->route('news.index')->with('success', 'Nieuwsbericht verwijderd.');
     }
+    
 }
