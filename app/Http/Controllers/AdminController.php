@@ -32,7 +32,7 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Je kunt jezelf niet demoten.');
         }
 
-        // Controleer of de gebruiker geen admin is
+        // Controleert of de gebruiker geen admin is
         if (!$user->is_admin) {
             return redirect()->route('admin.dashboard')->with('info', 'Deze gebruiker is geen admin.');
         }

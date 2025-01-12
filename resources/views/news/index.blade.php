@@ -1,7 +1,5 @@
 @extends('layouts.main')
 
-
-
 @section('content')
 <div class="max-w-7xl mx-auto p-6 bg-white shadow-md rounded">
     <h1 class="text-3xl font-bold mb-4">Laatste Nieuwtjes</h1>
@@ -18,20 +16,29 @@
             Nieuw item toevoegen
         </a>
     </div>
-@endif
+    @endif
 
     @if($news->isEmpty())
         <p class="text-gray-500">Er zijn nog geen nieuwsitems beschikbaar.</p>
     @else
         <ul class="space-y-4">
             @foreach($news as $item)
-                <li class="p-4 bg-gray-100 rounded shadow hover:shadow-md">
+                <li class="p-4 bg-gray-100 rounded shadow hover:shadow-md border-b border-black">
                     <h2 class="text-xl font-semibold">{{ $item->title }}</h2>
                     @if($item->image_path)
-                        <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->title }}" class="w-full h-auto mt-2 rounded">
+                        <img src="{{ asset('storage/' . $item->image_path) }}" 
+                             alt="{{ $item->title }}" 
+                             class="w-full max-w-[300px] max-h-[200px] mt-2 rounded object-cover">
                     @endif
                     <p class="mt-2 text-gray-700">{{ Str::limit($item->content, 100) }}</p>
-                    <small class="block mt-2 text-sm text-gray-500">Gepubliceerd op: {{ $item->publication_date }}</small>
+                    <small class="block mt-2 text-sm text-gray-500">
+                        Gepubliceerd op: 
+                        @if($item->published_at)
+                            {{ $item->published_at->format('d-m-Y H:i') }}
+                        @else
+                            Geen publicatiedatum beschikbaar
+                        @endif
+                    </small>
                     <a href="{{ route('news.show', $item) }}" class="inline-block mt-2 text-blue-500 hover:underline">Lees meer</a>
                 </li>
             @endforeach

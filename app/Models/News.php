@@ -13,15 +13,17 @@ class News extends Model
         'title',
         'content',
         'image_path',
-        'publication_date',
+        'published_at',
+    ];
+ 
+    protected $casts = [
+        'published_at' => 'datetime',
     ];
 
-   
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
-
 
     public function categories()
     {

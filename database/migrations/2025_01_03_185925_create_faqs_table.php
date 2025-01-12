@@ -9,9 +9,9 @@ return new class extends Migration {
     {
         Schema::create('faqs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('question');
             $table->text('answer');
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -20,10 +20,4 @@ return new class extends Migration {
     {
         Schema::dropIfExists('faqs');
     }
-
-
-    public function category() {
-        return $this->belongsTo(Category::class);
-    }
-    
 };

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\News;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,14 +31,15 @@ class NewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'published_at' => 'nullable|date',
         ]);
 
         if ($request->hasFile('image')) {
             $validated['image_path'] = $request->file('image')->store('news_images', 'public');
         }
-        
 
-        $validated['published_at'] = now();
+        
+        $validated['published_at'] = $validated['published_at'] ?? Carbon::now();
 
         News::create($validated);
 
@@ -55,14 +57,17 @@ class NewsController extends Controller
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'published_at' => 'nullable|date',
         ]);
 
         if ($request->hasFile('image')) {
-            if ($news->image) {
-                Storage::delete($news->image);
+            if ($news->image_path) {
+                Storage::delete($news->image_path);
             }
-            $validated['image'] = $request->file('image')->store('news_images');
+            $validated['image_path'] = $request->file('image')->store('news_images', 'public');
         }
+
+        $news->published_at = $validated['published_at'] ?? $news->published_at;
 
         $news->update($validated);
 
@@ -74,10 +79,9 @@ class NewsController extends Controller
         if ($news->image_path) {
             Storage::delete($news->image_path);
         }
-    
+
         $news->delete();
-    
+
         return redirect()->route('news.index')->with('success', 'Nieuwsbericht verwijderd.');
     }
-    
 }

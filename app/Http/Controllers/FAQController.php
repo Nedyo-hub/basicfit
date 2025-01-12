@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FAQ;
+use App\Models\FAQEntry;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class FAQController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::all(); 
         return view('faq.create', compact('categories'));
     }
 
@@ -28,7 +28,7 @@ class FAQController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        FAQ::create($request->all());
+        FAQEntry::create($request->all());
         return redirect()->route('faq.index')->with('success', 'FAQ toegevoegd.');
     }
 

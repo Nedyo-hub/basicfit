@@ -35,7 +35,7 @@
                         <form method="POST" action="{{ route('admin.user.promote', $user->id) }}" class="inline-block">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
+                            <button type="submit" style="background-color: #00FF00; color: white; padding: 8px 16px; border-radius: 4px;"class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
                                 Promoveer naar Admin
                             </button>
                         </form>
@@ -43,7 +43,7 @@
                         <form method="POST" action="{{ route('admin.user.demote', $user->id) }}" class="inline-block">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                            <button type="submit" style="background-color: #f56565; color: white; padding: 8px 16px; border-radius: 4px;"class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
                                 Demoteer naar User
                             </button>
                         </form>
