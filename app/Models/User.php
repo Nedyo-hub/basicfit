@@ -19,6 +19,7 @@ class User extends Authenticatable
         'birthday',
         'profile_picture',
         'about_me',
+        'is_admin',
     ];
 
     protected $hidden = [
@@ -37,8 +38,9 @@ class User extends Authenticatable
         'birthday' => 'date',
     ];
     public function isAdmin()
-    {
-        return $this->role === 'admin';
-    }
+{
+    return $this->is_admin;
+}
+
     
 }

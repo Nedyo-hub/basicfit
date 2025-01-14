@@ -9,55 +9,65 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    /**
-     * Toon publieke profielpagina.
-     */
+    // Publieke profielpagina
     public function show(User $user)
     {
-        return view('profile.show', ['user' => $user]);
+        // Geef de publieke profielpagina terug
+        return view('profile.show', compact('user'));
     }
 
-    /**
-     * Toon profiel bewerken pagina voor ingelogde gebruiker.
-     */
+    // Profiel bewerken
     public function edit()
     {
-        $user = auth()->user(); 
-        return view('profile.edit', ['user' => $user]); 
-        dd(auth()->user());
-
+        $user = Auth::user(); // Haal de ingelogde gebruiker op
+        return view('profile.edit', compact('user')); // Return de edit view
     }
 
-    /**
-     * Update het profiel van de ingelogde gebruiker.
-     */
+    // Profiel updaten
     public function update(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
-        // Validatie van input
-        $validated = $request->validate([
+        $request->validate([
             'username' => 'nullable|string|max:255',
             'birthday' => 'nullable|date',
-            'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'profile_picture' => 'nullable|image|max:2048', // Max grootte 2MB
             'about_me' => 'nullable|string|max:500',
         ]);
 
+        // Velden updaten
+        $user->username = $request->username;
+        $user->birthday = $request->birthday;
+        $user->about_me = $request->about_me;
+
         // Profielfoto uploaden
         if ($request->hasFile('profile_picture')) {
-            // Oude profielfoto verwijderen als er een is
             if ($user->profile_picture) {
                 Storage::delete($user->profile_picture);
             }
 
-            // Nieuwe profielfoto opslaan
-            $validated['profile_picture'] = $request->file('profile_picture')->store('profile_pictures');
+            // Upload de nieuwe profielfoto
+            $path = $request->file('profile_picture')->store('profile_pictures');
+            $user->profile_picture = $path;
         }
 
-        // Gebruikersgegevens updaten
-        $user->update($validated);
+        $user->save();
 
-        // Redirect met succesbericht
-        return redirect()->route('profile.edit')->with('success', 'Profiel succesvol bijgewerkt.');
+        return redirect()->route('profile.edit')->with('success', 'Profiel bijgewerkt.');
+    }
+
+    // Profiel verwijderen
+    public function destroy()
+    {
+        $user = Auth::user();
+
+        // Profielfoto verwijderen van de server, als deze bestaat
+        if ($user->profile_picture) {
+            Storage::delete($user->profile_picture);
+        }
+
+        $user->delete(); // Gebruiker verwijderen
+
+        return redirect('/')->with('success', 'Profiel verwijderd.');
     }
 }

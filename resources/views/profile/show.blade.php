@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $user->username }}'s Profiel</title>
-</head>
-<body>
-    <h1>{{ $user->username ?? 'Gebruiker' }}</h1>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <h1>Profiel van {{ $user->username }}</h1>
+
     <p>Email: {{ $user->email }}</p>
-    <p>Geboortedatum: {{ $user->birthday ? $user->birthday->format('d-m-Y') : 'Niet ingevuld' }}</p>
-    <p>Over mij: {{ $user->about_me ?? 'Geen informatie beschikbaar.' }}</p>
+    <p>Verjaardag: {{ $user->birthday ?? 'Niet ingevuld' }}</p>
+    <p>Over mij: {{ $user->about_me ?? 'Geen informatie beschikbaar' }}</p>
 
     @if ($user->profile_picture)
-        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profielfoto" style="max-width: 200px;">
+        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profielfoto" style="width: 150px; height: 150px; border-radius: 50%;">
     @else
-        <p>Geen profielfoto beschikbaar.</p>
+        <p>Geen profielfoto beschikbaar</p>
     @endif
-</body>
-</html>
+</div>
+@endsection
