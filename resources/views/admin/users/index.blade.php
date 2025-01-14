@@ -7,6 +7,14 @@
         </div>
     @endif
 
+    @if(auth()->user()->is_admin)
+        <div class="text-right mb-4">
+            <a href="{{ route('admin.user.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Nieuwe gebruiker aanmaken
+            </a>
+        </div>
+    @endif
+
     <table class="min-w-full bg-white">
         <thead>
             <tr>

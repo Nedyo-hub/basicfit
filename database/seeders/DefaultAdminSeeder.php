@@ -10,16 +10,26 @@ class DefaultAdminSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * @return void
      */
-    public function run(): void
+    public function run()
     {
-        User::updateOrCreate(
+        $admin = User::updateOrCreate(
             ['email' => 'admin@ehb.be'], 
             [
-                'name' => 'Admin',
+                'name' => 'admin', 
                 'password' => Hash::make('Password!321'), 
+                'role' => 'admin', 
                 'is_admin' => true, 
             ]
         );
+
+       
+        if ($admin->wasRecentlyCreated) {
+            echo "Admin-gebruiker is succesvol aangemaakt.\n";
+        } else {
+            echo "Admin-gebruiker is succesvol bijgewerkt.\n";
+        }
     }
 }

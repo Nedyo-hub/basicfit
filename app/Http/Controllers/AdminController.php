@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -13,8 +14,8 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('users'));
     }
 
-    public function promote(User $user)
-    {
+    public function promote($id)
+    {   $user = User::findOrFail($id);
         if ($user->is_admin) {
             return redirect()->route('admin.dashboard')->with('info', 'Deze gebruiker is al een admin.');
         }
@@ -25,8 +26,8 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'De gebruiker is succesvol gepromoveerd tot admin.');
     }
 
-    public function demote(User $user)
-    {
+    public function demote($id)
+    {   $user = User::findOrFail($id);
         //  admin  kan zichzelf niet demoten
         if (auth()->id() === $user->id) {
             return redirect()->route('admin.dashboard')->with('error', 'Je kunt jezelf niet demoten.');
@@ -43,10 +44,14 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'Adminrechten zijn succesvol verwijderd.');
     }
 
-    /**
-     * Nieuwe gebruiker aanmaken via admin.
-     */
-    public function createUser(Request $request)
+
+    public function create()
+    {
+        // Toon het formulier om een nieuwe gebruiker aan te maken
+        return view('admin.users.create');
+    }
+    
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -58,10 +63,11 @@ class AdminController extends Controller
         User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
+            'password' => Hash::make($validated['password']),
             'is_admin' => $validated['is_admin'],
         ]);
 
-        return redirect()->route('admin.dashboard')->with('success', 'Gebruiker succesvol aangemaakt.');
+        return redirect()->route('admin.dashboard')->with('success', 'Nieuwe gebruiker succesvol aangemaakt.');
     }
+
 }

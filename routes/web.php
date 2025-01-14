@@ -27,7 +27,7 @@ Route::get('/profile/{user:username}', [ProfileController::class, 'show'])->name
 
 // Gebruikersprofiel en bewerkingsroutes (alleen voor ingelogde gebruikers)
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -35,12 +35,18 @@ Route::middleware(['auth'])->group(function () {
 // Admin routes
 Route::middleware(['auth', 'admin'])->group(function () {
     // Admin dashboard
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminController ::class, 'dashboard'])->name('admin.dashboard');
 
     // Admin gebruikersbeheer
     Route::get('/admin/users', [AdminController::class, 'dashboard'])->name('admin.users.index');
-    Route::patch('/admin/users/{user}/promote', [AdminController::class, 'promote'])->name('admin.user.promote');
-    Route::patch('/admin/users/{user}/demote', [AdminController::class, 'demote'])->name('admin.user.demote');
+    Route::post('/admin/users/{id}/promote', [AdminController::class, 'promote'])->name('admin.user.promote');
+    Route::post('/admin/users/{id}/demote', [AdminController::class, 'demote'])->name('admin.user.demote');
+
+// Route voor het aanmaken van een nieuwe gebruiker
+Route::get('/admin/users/create', [AdminController::class, 'create'])->name('admin.user.create');
+Route::post('/admin/users/store', [AdminController::class, 'store'])->name('admin.user.store');
+
+    
 
 // Nieuwsbeheer voor Admins
 Route::middleware(['auth', 'admin'])->group(function () {
