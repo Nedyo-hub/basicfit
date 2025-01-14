@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CommentController; 
 
+
 // Authenticatie routes
 require __DIR__ . '/auth.php';
 
@@ -86,3 +87,7 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 // Reacties routes
 Route::post('/comments/{news}', [CommentController::class, 'store'])->name('comments.store');
+
+
+
+

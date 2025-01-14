@@ -32,13 +32,13 @@ class FAQController extends Controller
         return redirect()->route('faq.index')->with('success', 'FAQ toegevoegd.');
     }
 
-    public function edit(FAQ $faq)
+    public function edit(FaqEntry $faq)
     {
         $categories = Category::all();
         return view('faq.edit', compact('faq', 'categories'));
     }
 
-    public function update(Request $request, FAQ $faq)
+    public function update(Request $request, FaqEntry $faq)
     {
         $request->validate([
             'question' => 'required|string|max:255',
@@ -50,7 +50,7 @@ class FAQController extends Controller
         return redirect()->route('faq.index')->with('success', 'FAQ bijgewerkt.');
     }
 
-    public function destroy(FAQ $faq)
+    public function destroy(FaqEntry $faq)
     {
         $faq->delete();
         return redirect()->route('faq.index')->with('success', 'FAQ verwijderd.');

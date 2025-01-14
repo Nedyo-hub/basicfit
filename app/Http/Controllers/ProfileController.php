@@ -22,7 +22,7 @@ class ProfileController extends Controller
         $user = Auth::user(); // Haal de ingelogde gebruiker op
         return view('profile.edit', compact('user')); // Return de edit view
     }
-
+    
     // Profiel updaten
     public function update(Request $request)
     {
@@ -47,7 +47,7 @@ class ProfileController extends Controller
             }
 
             // Upload de nieuwe profielfoto
-            $path = $request->file('profile_picture')->store('profile_pictures');
+            $path = $request->file('profile_picture')->store('profile_pictures','public');
             $user->profile_picture = $path;
         }
 
