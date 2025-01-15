@@ -19,14 +19,16 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
 
-        Category::create($request->all());
-        return redirect()->route('categories.index')->with('success', 'Category created successfully.');
-    }
+    Category::create($request->all());
+    return redirect()->route('faq.index')->with('success', 'Categorie succesvol aangemaakt.');
+}
+
+
 
     public function edit(Category $category)
     {
@@ -34,18 +36,20 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request, Category $category)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+    ]);
 
-        $category->update($request->all());
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
-    }
+    $category->update($request->all());
+    return redirect()->route('faq.index')->with('success', 'Categorie succesvol bijgewerkt.');
+}
+
 
     public function destroy(Category $category)
-    {
-        $category->delete();
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
-    }
+{
+    $category->delete();
+    return redirect()->route('faq.index')->with('success', 'Categorie succesvol verwijderd.');
+}
+
 }

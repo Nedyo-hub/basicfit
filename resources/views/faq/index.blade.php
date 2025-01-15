@@ -12,9 +12,6 @@
                                 <strong class="text-white">{{ $faq->question }}</strong>
                                 <p class="text-gray-400">{{ $faq->answer }}</p>
                                 @if (auth()->check() && auth()->user()->is_admin)
-                                    
-                                
-
                                     <div class="mt-2">
                                         <a href="{{ route('faqs.edit', $faq->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Wijzig</a>
                                         <form action="{{ route('faqs.destroy', $faq->id) }}" method="POST" style="display:inline-block;">
@@ -29,15 +26,28 @@
                             </li>
                         @endforeach
                     </ul>
+                    @if (auth()->check() && auth()->user()->is_admin)
+                        <div class="flex justify-end mt-4 space-x-2">
+                            <a href="{{ route('categories.edit', $category->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                                Wijzigen
+                            </a>
+                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Weet je zeker dat je deze categorie wilt verwijderen?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+                                    Verwijderen
+                                </button>
+                            </form>
+                        </div>
+                    @endif
                 </div>
             @endforeach
 
             @if (auth()->check() && auth()->user()->is_admin)
-                
-            
-            
-                <div class="mt-6">
+                <div class="mt-6 flex space-x-4">
                     <a href="{{ route('faqs.create') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Nieuwe FAQ toevoegen</a>
+
+                    <a href="{{ route('categories.create') }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Nieuwe Categorie toevoegen</a>
                 </div>
             @endif
         </div>
