@@ -10,8 +10,9 @@ use Illuminate\Support\Facades\Storage;
 class ProfileController extends Controller
 {
     // Publieke profielpagina
-    public function show(User $user)
+    public function show($user_id)
     {
+        $user = User::findOrFail($user_id);
         // Geef de publieke profielpagina terug
         return view('profile.show', compact('user'));
     }

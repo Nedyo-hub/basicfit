@@ -8,7 +8,7 @@
                 <div class="mb-4 p-4 bg-gray-800 rounded-lg shadow-md">
                     <p class="text-sm text-gray-500 mb-2">
                         Geplaatst door: 
-                        <a href="{{ route('profile.show', $reply->user->username) }}" class="text-blue-500 hover:underline">
+                        <a href="{{ route('profile.show', $reply->user_id) }}" class="text-blue-500 hover:underline">
                             {{ $reply->user->name }}
                         </a>
                     </p>

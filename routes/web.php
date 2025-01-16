@@ -23,7 +23,7 @@ Route::group([], function () {
     });
 
     // Publieke profielpagina
-    Route::get('/profile/{user:username}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/{user_id}', [ProfileController::class, 'show'])->name('profile.show');
 
     // Publieke routes voor nieuws
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');
@@ -72,7 +72,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/admin/users/store', [AdminController::class, 'store'])->name('admin.user.store');
 
     // Nieuwsbeheer voor Admins
-    Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
+    Route::get('/news/create/index', [NewsController::class, 'create'])->name('news.create');
     Route::post('/news', [NewsController::class, 'store'])->name('news.store');
     Route::get('/news/{news}/edit', [NewsController::class, 'edit'])->name('news.edit');
     Route::patch('/news/{news}', [NewsController::class, 'update'])->name('news.update');

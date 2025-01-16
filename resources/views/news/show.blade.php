@@ -43,7 +43,7 @@
         @forelse($news->comments as $comment)
             <div class="mb-4 p-4 border border-gray-200 rounded">
                 <p class="font-semibold">
-                    <a href="{{ route('profile.show', $comment->user->username ?? '') }}" class="text-blue-500 hover:underline">
+                    <a href="{{ route('profile.show', $comment->user_id ?? '') }}" class="text-blue-500 hover:underline">
                         {{ $comment->user->name ?? 'Anonieme gebruiker' }}
                     </a>
                 </p>

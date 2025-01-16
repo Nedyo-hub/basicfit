@@ -49,3 +49,13 @@ Gebruik de volgende gegevens om direct in te loggen als admin:
 - **E-mail**: admin@ehb.be
 - **Wachtwoord**: Password!321
 
+
+### Bronnen:
+https://youtu.be/986iFLWJ8o8?feature=shared
+https://youtu.be/P52ZNSiTu6A?feature=shared
+CHATGPT voor Structuur-enhancing
+https://laravel.com/docs/11.x
+Mailtrap.io om contactmails te ontvangen
+
+
+

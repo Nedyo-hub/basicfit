@@ -15,7 +15,7 @@
                     <p class="text-gray-400">{{ $topic->content }}</p>
                     <p class="text-sm text-gray-500">
                         Geplaatst door: 
-                        <a href="{{ route('profile.show', $topic->user->username) }}" 
+                        <a href="{{ route('profile.show', $topic->user_id) }}" 
                            class="font-bold text-blue-500 hover:underline hover:text-blue-700">
                             {{ $topic->user->name }}
                         </a>
